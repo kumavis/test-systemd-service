@@ -1,0 +1,35 @@
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  deploy:
+    name: Deploy Service
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout main
+      uses: actions/checkout@v2
+
+    # - name: Install doctl
+    #   uses: digitalocean/action-doctl@v2
+    #   with:
+    #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        # username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        # port: ${{ secrets.PORT }}
+        script: whoami
+        
+# $ doctl compute ssh $DROPLET_ID --ssh-command pwd
+
+# doctl compute ssh-key create <key-name> [flags]
+# doctl compute ssh-key import <key-name> --public-key-file [file]
+# doctl compute ssh-key delete <key-id|key-fingerprint> [flags]
