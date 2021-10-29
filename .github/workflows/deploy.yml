@@ -8,6 +8,7 @@ jobs:
 
   deploy:
     name: Deploy Service
+    environment:  test-systemd-service
     runs-on: ubuntu-latest
     steps:
 
