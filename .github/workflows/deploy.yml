@@ -15,25 +15,31 @@ jobs:
     - name: Checkout main
       uses: actions/checkout@v2
 
-    # - name: Install doctl
-    #   uses: digitalocean/action-doctl@v2
-    #   with:
-    #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: copy service
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        # port: ${{ secrets.PORT }}
+        source: "services"
+        target: "/etc/systemd/system/"
 
-    - name: debug
-      run: awk 'BEGIN{for(v in ENVIRON) print v}'
+    - name: copy files
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        # port: ${{ secrets.PORT }}
+        source: "files"
+        target: "/sbin/service-primary/"
 
-    - name: executing remote ssh commands using ssh key
+    - name: reload and enable service
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         # port: ${{ secrets.PORT }}
-        script: pwd
-        
-# $ doctl compute ssh $DROPLET_ID --ssh-command pwd
-
-# doctl compute ssh-key create <key-name> [flags]
-# doctl compute ssh-key import <key-name> --public-key-file [file]
-# doctl compute ssh-key delete <key-id|key-fingerprint> [flags]
+        script: systemctl daemon-reload && systemctl restart primary.service
