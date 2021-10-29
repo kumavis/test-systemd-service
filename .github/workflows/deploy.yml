@@ -19,6 +19,9 @@ jobs:
     #   with:
     #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
+    - name: debug
+      run: awk 'BEGIN{for(v in ENVIRON) print v}'
+
     - name: executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@master
       with:
