@@ -22,8 +22,9 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         # port: ${{ secrets.PORT }}
-        source: "services/*"
+        source: "services/*.service"
         target: "/etc/systemd/system/"
+        strip_components: 1
 
     - name: copy files
       uses: appleboy/scp-action@master
@@ -33,7 +34,8 @@ jobs:
         key: ${{ secrets.KEY }}
         # port: ${{ secrets.PORT }}
         source: "files/*"
-        target: "/sbin/service-primary/"
+        target: "/sbin/primary.service/"
+        strip_components: 1
 
     - name: reload and enable service
       uses: appleboy/ssh-action@master
