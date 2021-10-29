@@ -2,7 +2,7 @@
 Description=example systemd service unit file.
 
 [Service]
-ExecStart=/bin/bash /usr/sbin/example.sh
+ExecStart=/bin/bash /sbin/service-primary/example.sh
 
 [Install]
 WantedBy=multi-user.target
